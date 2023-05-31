@@ -1,12 +1,12 @@
-const fs = require('fs');
-class ProductManager {
+import fs from "fs";
+export default class ProductManager {
 
     #products;
     #path;
 
     constructor() {
         this.#products = [];
-        this.#path = './product.json';
+        this.#path = `${fileName}.json`;
     }
 
     addProduct(title, description, price, thumbnail, code, stock) {
@@ -99,7 +99,6 @@ class ProductManager {
         const products = this.getProducts();
         const productIndex = products.findIndex((product) => product.id === id);
 
-        // Validar ID:
         if (productIndex !== -1) {
             products.splice(productIndex, 1);
             try {
@@ -112,45 +111,3 @@ class ProductManager {
         }
     }
 }
-
-// Creación del productManager
-const productManager = new ProductManager;
-
-// Se llama a getProducts la primera vez, debe mostrar array vacío
-console.log(productManager.getProducts());
-
-// Se crean 3 productos correctamente
-productManager.addProduct('Samsung Galaxy A33', 'Samsung Galaxy A33 Phone', 350, 'assets/samsung-a-33.png', '1020', 12);
-productManager.addProduct('Samsung Galaxy A52', 'Samsung Galaxy A52 Phone', 450, 'assets/samsung-a-52.png', '1021', 5);
-productManager.addProduct('Samsung Galaxy Note 5', 'Samsung Galaxy Note 5 Phone', 250, 'assets/samsung-galaxy-note-5.png', '1022', 10);
-
-// Se crea 1 producto con el mismo código, arroja error
-productManager.addProduct('Xiaomi Redmi Note 11', 'Xiaomi Redmi Note 11', 550, 'assets/xiaomi-redmi-11.png', '1021', 8);
-
-// Se crea producto que no tiene todos los campos diligenciados, arroja error
-productManager.addProduct('', 'Xiaomi Redmi Note 11', 550, 'assets/xiaomi-redmi-11.png', '1022', 8);
-
-// Se vuelve a llamar a products, muestra los 3 productos creados
-console.log(productManager.getProducts());
-
-// Llama al producto con ID creado, correctamente
-console.log(productManager.getProductById(1));
-
-// Llama al producto con ID no creado aún, arroja error
-console.log(productManager.getProductById(4));
-
-// Llama a updateProduct correctamente
-productManager.updateProduct(2, 'stock', 35);
-
-// Llama al producto con ID 2 para chequear update
-console.log(productManager.getProductById(2));
-
-// Llama a updateProduct y cambia a un codigo de producto que ya existe, arroja error
-productManager.updateProduct(2, 'code', "1020");
-
-// Se llamará al método “deleteProduct”
-productManager.deleteProduct(3)
-
-// Se vuelve a llamar a products, muestra los 2 productos que quedan
-console.log(productManager.getProducts());
-
