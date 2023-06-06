@@ -21,6 +21,7 @@ app.get("/products", async (req, res) => {
 	}
 });
 
+
 app.get("/products/:pid", async (req, res) => {
 	try {
 		const { pid } = req.params;

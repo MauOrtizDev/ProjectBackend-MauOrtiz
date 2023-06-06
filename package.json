@@ -1,24 +1,26 @@
 {
-    "name": "entregable",
-    "version": "1.0.0",
-    "description": "",
-    "main": "backend.js",
-    "type": "module",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/MauOrtizDev/ProjectBackend-MauOrtiz.git"
-    },
-    "author": "Agustin Braco",
-    "license": "ISC",
-    "bugs": {
-      "url": "https://github.com/MauOrtizDev/ProjectBackend-MauOrtiz/issues"
-    },
-    "homepage": "https://github.com/MauOrtizDev/ProjectBackend-MauOrtiz#readme",
-    "dependencies": {
-      "express": "^4.18.2",
-      "nodemon": "^2.0.22"
-    }
+  "name": "entregable",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MauOrtizDev/ProjectBackend-MauOrtiz.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MauOrtizDev/ProjectBackend-MauOrtiz/issues"
+  },
+  "homepage": "https://github.com/MauOrtizDev/ProjectBackend-MauOrtiz#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.22"
   }
+}

@@ -4,9 +4,9 @@ export default class ProductManager {
     #products;
     #path;
 
-    constructor() {
+    constructor(fileName) {
         this.#products = [];
-        this.#path = `${fileName}.json`;
+        this.#path = `./src/${fileName}.json`;
     }
 
     addProduct(title, description, price, thumbnail, code, stock) {
