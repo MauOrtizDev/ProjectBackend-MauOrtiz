@@ -1,38 +1,21 @@
 import express from "express";
-const app = express();
-const port = 3000;
+import carts from "./routes/carts.router.js";
+import products from "./routes/products.router.js";
 
-import ProductManager from "./productManager.js";
-const productManager = new ProductManager("products");
+const app = express();
+const port = 8080;
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use("/static", express.static("../public"));
+app.use("/api/products", products);
+app.use("/api/carts", carts);
 
-app.get("/products", async (req, res) => {
-	try {
-		const { limit } = req.query;
-		const products = await productManager.getProducts();
-		if (limit) {
-			const limitedProducts = products.slice(0, limit);
-			return res.json(limitedProducts);
-		}
-		res.json(products);
-	} catch (err) {
-		return res.status(500).json({ error: err.message });
-	}
-});
-
-
-app.get("/products/:pid", async (req, res) => {
-	try {
-		const { pid } = req.params;
-		const productId = parseInt(pid);
-		const product = await productManager.getProductById(productId);
-		return res.json(product);
-	} catch (err) {
-		return res.status(500).json({ error: err.message });
-	}
+app.get("/", (req, res) => {
+	res.send("HOME");
 });
 
 app.listen(port, () => {
 	console.log(`Server listening on http://localhost:${port}`);
 });
+

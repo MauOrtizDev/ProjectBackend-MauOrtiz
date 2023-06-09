@@ -9,32 +9,38 @@ export default class ProductManager {
         this.#path = `./src/${fileName}.json`;
     }
 
-    addProduct(title, description, price, thumbnail, code, stock) {
-        const products = this.getProducts();
-        const product = {
-            id: products.reduce((max, prod) => max > prod.id ? max : prod.id, 0) + 1 || 1,
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock
-        }
+    addProduct(newProduct) {
 
-        const existsCode = products.find((el) => {
-            return el.code == code
-        })
+        try {
+            const products = this.getProducts();
 
-        if (existsCode) {
-            console.log(`Product code ${code} already added`);
-        } else {
-            const isEmpty = Object.values(product).some(x => !x);
-            isEmpty ? console.log('There are empty properties in the product. Product not added') : products.push(product);
-            try {
+            if (
+                !newProduct.title ||
+                !newProduct.description ||
+                !newProduct.code ||
+                !newProduct.price ||
+                !newProduct.status ||
+                !newProduct.stock ||
+                !newProduct.category
+            ) {
+                return `Please fill all the required fields to add a product`;
+            };
+
+            const existsCode = products.find((el) => {
+                return el.code == newProduct.code
+            })
+
+            if (existsCode) {
+                console.log(`Product code ${code} already added`);
+            } else {
+                newProduct.id = products.reduce((max, prod) => max > prod.id ? max : prod.id, 0) + 1 || 1;
+                const product = newProduct;
+                products.push(product);
                 fs.writeFileSync(this.#path, JSON.stringify(products));
-            } catch (error) {
-                return `Writing error while adding product: ${error}`;
             }
+
+        } catch (error) {
+            return `Writing error while adding product: ${error}`;
         }
     }
 
@@ -63,7 +69,7 @@ export default class ProductManager {
     updateProduct(id, attr, value) {
         const products = this.getProducts();
         const product = products.find((product) => product.id === id);
-        
+
         if (!product) {
             return console.log(`Product not found with ID ${id}`);
         } else if (!(attr in product)) {
