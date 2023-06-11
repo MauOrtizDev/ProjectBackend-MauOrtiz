@@ -36,7 +36,7 @@ products.post("/", async (req, res) => {
 		const newProduct = req.body;
 		const postResponse = productsManager.addProduct(newProduct);
 
-		return res.status(200).json(postResponse);
+		return res.status(201).json(postResponse);
 	} catch (err) {
 		return res.status(500).json({ error: err.message });
 	};

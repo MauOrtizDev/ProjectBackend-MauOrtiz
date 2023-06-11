@@ -10,9 +10,11 @@ export default class ProductManager {
     }
 
     addProduct(newProduct) {
-
         try {
             const products = this.getProducts();
+
+
+            newProduct.title;
 
             if (
                 !newProduct.title ||
@@ -21,26 +23,31 @@ export default class ProductManager {
                 !newProduct.price ||
                 !newProduct.status ||
                 !newProduct.stock ||
-                !newProduct.category
+                !newProduct.category ||
+                !newProduct.thumbnail
             ) {
-                return `Please fill all the required fields to add a product`;
+                return newProduct;
             };
 
             const existsCode = products.find((el) => {
                 return el.code == newProduct.code
             })
-
+            
+            
             if (existsCode) {
-                console.log(`Product code ${code} already added`);
+
+                return `Product code ${newProduct.code} already added`;
             } else {
+
                 newProduct.id = products.reduce((max, prod) => max > prod.id ? max : prod.id, 0) + 1 || 1;
                 const product = newProduct;
                 products.push(product);
                 fs.writeFileSync(this.#path, JSON.stringify(products));
+                return `product ${newProduct.title} with code ${newProduct.code} succesfully added`;
             }
 
         } catch (error) {
-            return `Writing error while adding product: ${error}`;
+            return `Writing error while adding product: ${error} ${a} ${b}`;
         }
     }
 
@@ -66,18 +73,19 @@ export default class ProductManager {
         return products.find((el) => el.id == id) || `Id ${id} not found`;
     }
 
-    updateProduct(id, attr, value) {
+    updateProduct(id, updatingObject) {
+        const [attr, value] = Object.entries(updatingObject)[0];
         const products = this.getProducts();
         const product = products.find((product) => product.id === id);
 
         if (!product) {
-            return console.log(`Product not found with ID ${id}`);
+            return `Product not found with ID ${id}`;
         } else if (!(attr in product)) {
-            return console.log(`Attribute "${attr}" not found in product ${id}`);
+            return `Attribute "${attr}" not found in product ${id}`;
         } else if (attr == 'id') {
-            return console.log(`Attribute ID can't be updated`);
+            return `Attribute ID can't be updated`;
         } else if (!value) {
-            return console.log(`Value ${value} can't be used to update product.`);
+            return `Value ${value} can't be used to update product.`;
         } else {
             product[attr] = value;
 
@@ -89,11 +97,12 @@ export default class ProductManager {
                 );
                 const hasDuplicates = uniqueValues.size < products.length;
                 if (hasDuplicates) {
-                    return console.log(`Can't update product code ${value}, is already added`);
+                    return `Can't update product code ${value}, is already added`;
                 }
             }
             try {
                 fs.writeFileSync(this.#path, JSON.stringify(products));
+                return `Product with ID ${id} successfully updated`;
             } catch (error) {
                 return `Error while updating the product: ${error}`;
             }
@@ -109,6 +118,7 @@ export default class ProductManager {
             products.splice(productIndex, 1);
             try {
                 fs.writeFileSync(this.#path, JSON.stringify(products));
+                return `Product with ID ${id} successfully deleted`;
             } catch (error) {
                 return `Error deleting the product: ${error}`;
             }
