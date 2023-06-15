@@ -15,7 +15,8 @@ router.get("/", (req, res) => {
 router.get("/realtimeproducts", (req, res) => {
 	res.render("realTimeProducts", {
 		style: "style.css",
-		documentTitle: "Socket",
+		title: "Real Time Products",
+        products
 	});
 });
 
