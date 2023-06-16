@@ -1,6 +1,6 @@
 <div class="">
 	<h1 class="">Products</h1>
-	<ul class="">
+	<ul id="real-time-products">
 		{{#each products}}
 			<li class="">{{this.title}}</li>
 		{{/each}}
@@ -21,5 +21,6 @@
 	<input type="text" name="thumbnail"><br>
 	<input type="submit" value="Crear Producto">
 </form>
+
 <script src="./socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>

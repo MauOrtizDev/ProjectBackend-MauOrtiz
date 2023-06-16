@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
 
-	res.render('', {
+	res.render('home', {
         style:'style.css',
         title: "Home",
         products
@@ -19,5 +19,14 @@ router.get("/realtimeproducts", (req, res) => {
         products
 	});
 });
+
+router.get("/chat", (req, res) => {
+	res.render("chat", {
+		style: "style.css",
+		title: "Chat",
+        products
+	});
+});
+
 
 export default router;

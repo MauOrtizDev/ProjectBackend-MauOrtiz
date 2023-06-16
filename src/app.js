@@ -13,8 +13,6 @@ const httpServer = app.listen(port, () => {
 	console.log(`Server listening on http://localhost:${port}`);
 });
 
-const socketServer = new Server(httpServer);
-
 app.engine("handlebars", handlebars.engine());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
@@ -27,18 +25,25 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use('/', viewsRouter);
 
-socketServer.on("connection", (socket) => {
+const io = new Server(httpServer);
+let messages = [];
+
+io.on("connection", socket => {
 	console.log("A user connected");
+
+	io.emit("messageLogs", messages);
 
 	socket.on('message', data =>{
 		console.log(data);
+		messages.push(data);
+		io.emit('messageLogs', messages);
 	})
 
 	socket.emit('products',products);
 	/*
 	socket.broadcast.emit('evento_para_todos_menos_elactual','explicito');
 
-	socketServer.emit('evento_para_todos','todos los sockets');
+	io.emit('evento_para_todos','todos los sockets');
 	*/
 	socket.on("disconnect", () => {
 		console.log("Client disconnected");
