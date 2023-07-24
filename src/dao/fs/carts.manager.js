@@ -10,13 +10,17 @@ export default class CartsManager {
 	};
 
 	getCarts() {
+		// Validar si existe el archivo:
 		if (!fs.existsSync(this.#path)) {
 			try {
+				// Si no existe, crearlo:
 				fs.writeFileSync(this.#path, JSON.stringify(this.#carts));
 			} catch (err) {
 				return `Writing error while getting carts: ${err}`;
 			};
 		};
+
+		// Leer archivo y convertirlo en objeto:
 		try {
 			const data = fs.readFileSync(this.#path, "utf8");
 			const dataArray = JSON.parse(data);
@@ -28,12 +32,16 @@ export default class CartsManager {
 
 	lastId() {
 		const carts = this.getCarts();
+
+		// Obtener y devolver último ID:
 		if (carts.length > 0) {
 			const lastId = carts.reduce((maxId, cart) => {
 				return cart.id > maxId ? cart.id : maxId;
 			}, 0);
 			return lastId;
 		};
+
+		// Si el array está vacío, devolver 0:
 		return 0;
 	};
 
@@ -45,6 +53,8 @@ export default class CartsManager {
 				id: id,
 				products: []
 			};
+
+			// Agregar carrito y escribir el archivo:
 			carts.push(newCart);
 			fs.writeFileSync(this.#path, JSON.stringify(carts));
 			return `Cart added with ID ${id}`;
@@ -58,6 +68,7 @@ export default class CartsManager {
 			const carts = this.getCarts();
 			const cart = carts.find(cart => cart.id === id);
 	
+			// Validar si el carrito existe:
 			if (!cart) {
 				return `There's no cart with ID ${id}`;
 			};
@@ -74,9 +85,11 @@ export default class CartsManager {
 
 			const product = cart.products.find(product => product.product === productId);
 
+			// Validar si el producto ya está agregado:
 			if (product) {
 				product.quantity += 1;
 			} else {
+				// Si no, agregarlo:
 				const newProduct = {
 					product: productId,
 					quantity: 1,
@@ -95,16 +108,19 @@ export default class CartsManager {
 			const carts = this.getCarts();
 			const cart = carts.find(cart => cart.id === cartId);
 
+			// Validar ID de carrito:
 			if (!cart) {
 				return `There's no cart with ID ${cartId}`;
 			};
 
 			const productToDelete = cart.products.find(item => item.product === productId);
 
+			// Validar ID de producto:
 			if (!productToDelete) {
 				return `There's no product ${productId} in cart ${cartId}`;
 			};
 
+			// Si es correcto, filtrar carrito, borrar producto y escribir el archivo:
 			const filteredCart = cart.products.filter(item => {
 				return (
 					item.product !== productToDelete.product ||
